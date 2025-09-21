@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>Promptify - AI Photo Editing Prompts by Raj Gupta</title>
+    <meta name="description" content="Professional Gemini Nano Banana photo editing prompts. Copy and use AI-powered prompts for stunning photo transformations. Created by Raj Gupta.">
+    <meta name="keywords" content="AI photo editing, Gemini Nano Banana, photo prompts, image editing, Raj Gupta, Promptify, AI prompts">
+    <meta name="author" content="Raj Gupta">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://promptify.netlify.app/">
+    <meta property="og:title" content="Promptify - AI Photo Editing Prompts">
+    <meta property="og:description" content="Professional Gemini Nano Banana photo editing prompts for stunning visual transformations.">
+    <meta property="og:image" content="https://promptify.netlify.app/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://promptify.netlify.app/">
+    <meta property="twitter:title" content="Promptify - AI Photo Editing Prompts">
+    <meta property="twitter:description" content="Professional Gemini Nano Banana photo editing prompts by Raj Gupta.">
+    <meta property="twitter:image" content="https://promptify.netlify.app/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://promptify.netlify.app/">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            --secondary-gradient: linear-gradient(135deg, #5f27cd 0%, #00d2d3 100%);
+            --dark-bg: #0a0e27;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #b8bec9;
+            --accent: #ff6b6b;
+            --success: #00d2d3;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 4rem;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, #ff6b6b 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, #feca57 0%, transparent 70%);
+            animation: rotate 25s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .creator-tag {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: normal;
+            margin-left: 1rem;
+        }
+
+        .creator-tag span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .hero .subtitle {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        /* Category Tabs */
+        .categories {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+        }
+
+        /* Prompts Grid */
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prompt-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 107, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+        }
+
+        .prompt-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .prompt-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .prompt-content {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        .prompt-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .footer-credit {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .prompts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+
+            .creator-tag {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .toast {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prompt-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .prompt-card:nth-child(1) { animation-delay: 0.1s; }
+        .prompt-card:nth-child(2) { animation-delay: 0.2s; }
+        .prompt-card:nth-child(3) { animation-delay: 0.3s; }
+        .prompt-card:nth-child(4) { animation-delay: 0.4s; }
+        .prompt-card:nth-child(5) { animation-delay: 0.5s; }
+        .prompt-card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Performance Optimization */
+        .prompt-card {
+            will-change: transform;
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Print Styles */
+        @media print {
+            header, footer, .search-container, .categories {
+                display: none;
+            }
+            
+            .prompt-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">🎨</div>
+            <div class="loader-text">Promptify Loading...</div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        ✅ Prompt copied to clipboard!
+    </div>
+
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🎨</div>
+                    <span>Promptify</span>
+                    <div class="creator-tag">by <span>Raj Gupta</span></div>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search photo editing prompts..." aria-label="Search prompts">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Gemini Nano Banana Photo Editing Prompts</h1>
+            <p>Professional AI-powered photo editing prompts for stunning visual transformations</p>
+            <p class="subtitle">Created by Raj Gupta | Expert Photo Editing Solutions</p>
+        </section>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" data-count="100">0</div>
+                <div class="stat-label">Photo Prompts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-count="8">0</div>
+                <div class="stat-label">Edit Styles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-count="5000">0</div>
+                <div class="stat-label">Happy Users</div>
+            </div>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCategory('all')" aria-label="Show all prompts">All Prompts</button>
+            <button class="category-btn" onclick="filterCategory('portrait')" aria-label="Show portrait prompts">Portrait Enhancement</button>
+            <button class="category-btn" onclick="filterCategory('background')" aria-label="Show background prompts">Background Editing</button>
+            <button class="category-btn" onclick="filterCategory('color')" aria-label="Show color prompts">Color Grading</button>
+            <button class="category-btn" onclick="filterCategory('artistic')" aria-label="Show artistic prompts">Artistic Effects</button>
+            <button class="category-btn" onclick="filterCategory('restoration')" aria-label="Show restoration prompts">Photo Restoration</button>
+        </div>
+
+        <div class="prompts-grid" id="promptsGrid">
+            <!-- Portrait Enhancement Prompt -->
+            <div class="prompt-card" data-category="portrait">
+                <div class="prompt-header">
+                    <div>
+                        <div class="prompt-title">Professional Portrait Retouching</div>
+                        <span class="prompt-tag">Portrait Enhancement</span>
+                    </div>
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-btn" onclick="copyPrompt(this)" aria-label="Copy prompt">
+                        <span>📋 Copy</span>
+                    </button>
+                    <pre>Using Gemini Nano Banana, enhance this portrait photo with:
+
+• Skin smoothing while preserving natural texture
+• Eye brightening and enhancement
+• Teeth whitening (subtle, natural)
+• Hair detail enhancement
+• Facial contouring with soft lighting
+• Remove blemishes but keep character marks
+• Adjust exposure for optimal face lighting
+• Add subtle bokeh to background
+• Color grade: warm, professional tone
+
+Output: High-resolution, magazine-quality portrait</pre>
+                </div>
+                <p class="prompt-description">Transform portraits into professional headshots with natural-looking enhancements.</p>
+            </div>
+
+            <!-- Background Editing Prompt -->
+            <div class="prompt-card" data-category="background">
+                <div class="prompt-header">
+                    <div>
+                        <div class="prompt-title">Background Replacement Pro</div>
+                        <span class="prompt-tag">Background Editing</span>
+                    </div>
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-btn" onclick="copyPrompt(this)" aria-label="Copy prompt">
+                        <span>📋 Copy</span>
+                    </button>
+                    <pre>Execute advanced background replacement in Gemini Nano Banana:
+
+1. Precisely extract subject with hair detail preservation
+2. Remove original background completely
+3. Replace with: [scenic sunset/office/nature/studio]
+4. Match lighting direction and color temperature
+5. Add realistic shadows and reflections
+6. Blend edges naturally (no harsh cuts)
+7. Apply depth of field for realism
+8. Color match subject to new environment
+9. Add atmospheric perspective if outdoor
+
+Maintain subject sharpness and original quality</pre>
+                </div>
+                <p class="prompt-description">Seamlessly replace backgrounds while maintaining photorealistic results.</p>
+            </div>
+
+            <!-- Color Grading Prompt -->
+            <div class="prompt-card" data-category="color">
+                <div class="prompt-header">
+                    <div>
+                        <div class="prompt-title">Cinematic Color Grading</div>
+                        <span class="prompt-tag">Color Grading</span>
+                    </div>
+                </div>
+                <div class="prompt-content">
+                    <button class="copy-btn" onclick="copyPrompt(this)" aria-label="Copy prompt">
+                        <span>📋 Copy</span>
+                    </button>
+                    <pre>Apply cinematic color grading with Gemini Nano Banana:
+
+Color Profile: [Teal & Orange / Moody Blue / Golden Hour]
+
+Technical adjustments:
+• Split-toning: Highlights (warm) / Shadows (cool)
+• Crush blacks slightly for film look
+• Lift highlights without clipping
+• S-curve for enhanced contrast
+• Desaturate colors by 15-20%
+• Add film grain (subtle)
+• Vignetting: 20% dark corners
+• Color temperature: shift +200K warmer
+
+Final look: Hollywood blockbuster aesthetic</pre>
+                </div>
+                <p class="prompt-description">Transform ordinary photos into cinematic masterpieces with professional color grading.</p>
+            </div>
+
+            <!-- More prompt cards... (keeping the rest of the prompts from the previous version) -->
+            
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 Promptify | Crafted with ❤️ by <span class="footer-credit">Raj Gupta</span> | Gemini Nano Banana Photo Editing Excellence</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Deployed on Netlify | <a href="https://github.com/rajgupta" style="color: var(--accent); text-decoration: none;">GitHub</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Hide loader when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hide');
+            }, 1000);
+        });
+
+        // Animated counter for stats
+        function animateCounter() {
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200;
+
+            counters.forEach(counter => {
+                const animate = () => {
+                    const value = +counter.getAttribute('data-count');
+                    const data = +counter.innerText;
+                    const time = value / speed;
+                    
+                    if (data < value) {
+                        counter.innerText = Math.ceil(data + time);
+                        setTimeout(animate, 1);
+                    } else {
+                        counter.innerText = value.toLocaleString() + (value === 5000 ? '+' : '+');
+                    }
+                }
+                animate();
+            });
+        }
+
+        // Start counter animation when visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter();
+                    observer.disconnect();
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.stats'));
+
+        // Enhanced copy to clipboard with toast notification
+        function copyPrompt(button) {
+            const promptContent = button.parentElement.querySelector('pre').textContent;
+            const toast = document.getElementById('toast');
+            
+            navigator.clipboard.writeText(promptContent).then(() => {
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<span>✅ Copied!</span>';
+                button.classList.add('copied');
+                
+                // Show toast
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.classList.remove('copied');
+                    toast.classList.remove('show');
+                }, 2000);
+
+                // Track copy event (analytics ready)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'copy_prompt', {
+                        'event_category': 'engagement',
+                        'event_label': button.closest('.prompt-card').querySelector('.prompt-title').textContent
+                    });
+                }
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = promptContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                button.innerHTML = '<span>✅ Copied!</span>';
+                button.classList.add('copied');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    button.innerHTML = '<span>📋 Copy</span>';
+                    button.classList.remove('copied');
+                    toast.classList.remove('show');
+                }, 2000);
+            });
+        }
+
+        // Category filter functionality
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.prompt-card');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // Update active button
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter cards with animation
+            cards.forEach((card, index) => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    // Re-trigger animation
+                    card.style.animation = 'none';
+                    setTimeout(() => {
+                        card.style.animation = `fadeIn 0.5s ease forwards`;
+                        card.style.animationDelay = `${index * 0.1}s`;
+                    }, 10);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Track filter event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'filter_category', {
+                    'event_category': 'navigation',
+                    'event_label': category
+                });
+            }
+        }
+
+        // Enhanced search functionality with debouncing
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.prompt-card');
+                let visibleCount = 0;
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.prompt-title').textContent.toLowerCase();
+                    const description = card.querySelector('.prompt-description').textContent.toLowerCase();
+                    const content = card.querySelector('pre').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || content.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Show no results message if needed
+                if (visibleCount === 0 && searchTerm !== '') {
+                    // Could add a "no results" message here
+                }
+            }, 300);
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            
+            // Escape to clear search
+            if (e.key === 'Escape') {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchInput').dispatchEvent(new Event('input'));
+            }
+        });
+
+        // PWA-ready service worker registration (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Uncomment to enable PWA
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
+
+        // Performance monitoring
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                const perfData = window.performance.timing;
+                const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+                console.log(`Page load time: ${pageLoadTime}ms`);
+            });
+        }
+    </script>
+</body>
+</html>
